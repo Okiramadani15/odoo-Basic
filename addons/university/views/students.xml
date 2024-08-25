@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+<record id="student_kanban_view" model="ir.ui.view">
+        <field name="name">students.kanban</field>
+        <field name="model">students</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by='state'>
+                <field name="id"/>
+                <field name="image"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="trial_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <style>
+                                .o_kanban_images {
+                                    text-align: left;
+                                    padding: 10px;
+                                }
+                                .o_kanban_images img {
+                                    max-width: 250px; /* Set width as needed */
+                                    max-height: 100px; /* Set height as needed */
+                                    object-fit: cover; /* Ensures the image fits well */
+                                    border-radius: 8px; /* Optional: round corners */
+                                    border: 1px solid #ddd; /* Optional: border around the image */
+                                }
+                            </style>
+                            <div class="o_kanban_images">
+                                <img t-att-src="kanban_image('students','image',record.id.raw_value)" alt="Student Image"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <span><field name="code"/></span>
+                                </div>
+                                <div>
+                                    <span><field name="trial_date"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+				   <!-- Tambahkan grup status untuk kanban view -->
+            <groups>
+                <group string="Waiting" name="waiting" domain="[('state','=','waiting')]" />
+                <group string="Success" name="success" domain="[('state','=','success')]" />
+                <group string="Failed" name="failed" domain="[('state','=','failed')]" />
+            </groups>
+            </kanban>
+        </field>
+    </record>
+
+<!-- <record id="student_kanban_view" model="ir.ui.view">
+        <field name="name">students.kanban</field>
+        <field name="model">students</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="image"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="trial_date"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_images">
+								<img t-att-src="kanban_image('students','image',record.id.raw_value)"/>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <div>
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div>
+                                    <span><field name="code"/></span>
+                                </div>
+                                <div>
+                                    <span><field name="trial_date"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record> -->
+
+<record id="student_calendar_view" model="ir.ui.view">
+    <field name="name">students.calendar</field>
+    <field name="model">students</field>
+    <field name="arch" type="xml">
+        <calendar string="Student Session Schedule" date_start="trial_date">
+            <field name="name"/>
+            <field name="code"/>
+            <field name="trial_date"/>
+            <field name="state"/>
+        </calendar>
+    </field> 
+</record>
+
+   
+
+
+	<record id="student_search_view" model="ir.ui.view">
+		<field name="name">students.search</field>
+		<field name="model">students</field>
+		<field name="arch" type="xml">
+			<search string="Students">
+				<field name = "name" />
+				<field name = "code" />
+				<field name="trial_date"/>
+				<group expand="0" string="Group By">
+				  <filter name="trial_date" context="{'group_by' : 'trial_date'}"/>
+				</group>
+			</search>
+		</field> 
+	</record>
+
+	<record id="students_form_view" model="ir.ui.view">
+		<field name = "name">students.form</field>
+		<field name = "model">students</field>
+		<field name = "arch" type="xml">
+			<form string="Students">
+				<header>
+					<button string='Success' type='object' name='button_success' class='oe_highlight' />
+					<button string='Failed' type='object' name='button_failed'/>
+
+					<field name='state' widget='statusbar'/>
+				</header>
+				<sheet>
+					<group>
+						<group>
+						<field name = "image" widget="image" nolabel="1"/>
+						<field name="name"/>
+						<field name="code"/>
+						<field name="trial_date"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_students" model="ir.actions.act_window">
+		<field name="name">Student</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">students</field>
+		<field name="view_mode">tree,form,calendar,kanban</field>
+		<field name="context">{}</field>
+		<field name="domain">[]</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Create Your Data Here!
+			</p>
+		</field>
+	</record>
+
+	<menuitem	id="college_root_menu"
+				name="college"
+				web_icon="college,static/description/icon.png"
+				sequence="7"/>
+
+	<menuitem	id="student_menu"
+				name="Student" action="action_students"
+				parent="college_root_menu"
+				sequence="10"/>
+
+
+</odoo>

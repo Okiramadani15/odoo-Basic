@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tampilan Tree -->
+    <record id="purchase_tree_view_id" model="ir.ui.view">
+        <field name="name">Purchase Tree View</field>
+        <field name="model">my_purchase.purchase</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Tree">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    
+    <!-- Tampilan Form -->
+    <!-- <record id="purchase_form_view_id" model="ir.ui.view">
+        <field name="name">Purchase Form View</field>
+        <field name="model">my_purchase.purchase</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="date"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record> -->
+
+    <!-- Aksi -->
+    <record id="action_purchase" model="ir.actions.act_window">
+        <field name="name">Purchases</field>
+        <field name="res_model">my_purchase.purchase</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" ref="purchase_tree_view_id"/>
+    </record>
+
+
+    <!-- Tampilan Kanban -->
+   <record id="purchase_kanban_view_id" model="ir.ui.view">
+        <field name="name">Purchase Kanban View</field>
+        <field name="model">my_purchase.purchase</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb16">
+                                <strong>
+                                    <span>
+                                        <t t-esc="record.name.value"/>
+                                    </span>
+                                </strong>      
+                            </div>
+                            <div class="o_kanban_record_bottom">
+                                <div class="oe_kanban_bottom_left">
+                                    <span>
+                                        <t t-esc="record.date.value"/>
+                                    </span>
+                                </div>
+                                <div class="oe_kanban_bottom_right">
+                                    <span>
+                                        <t t-esc="record.status.value"/>
+                                    </span>
+                                </div>                             
+                            </div>  
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="pembelian_actions_kanban_view_id" model="ir.actions.act_window">
+        <field name="name">Purchase Actions</field>
+        <field name="res_model">my_purchase.purchase</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="purchase_kanban_view_id"/>
+    </record>
+
+
+       <!-- Tampilan Form -->
+    <record id="purchase_form_view_id" model="ir.ui.view">
+        <field name="name">Purchase Form View</field>
+        <field name="model">my_purchase.purchase</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Form">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem id="menu_my_purchase_root" name="My Purchase"/>
+    <menuitem id="menu_my_purchase" name="Purchases" parent="menu_my_purchase_root" action="action_purchase"/>
+</odoo>

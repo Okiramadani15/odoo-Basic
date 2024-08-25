@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="parent_purchase_id"
+        name="Pembelian"
+        sequence="10"/>
+        
+    <menuitem
+        id="child_purchase_id"
+        name="Detail Pembelian"
+        parent="parent_purchase_id"
+        action="pembelian_actions_tree_view_id"
+    />
+</odoo>
